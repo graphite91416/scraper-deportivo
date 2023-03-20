@@ -1,3 +1,10 @@
 /env
 /__pycache__
 /chromedriver_linux64
+/.git
+/.ipynb_checkpoints
+/csv
+dato.ipynb
+geckodriver.log
+prueba.py
+prueba
