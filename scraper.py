@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
     
 options = webdriver.ChromeOptions()
 options.add_argument('--incognito')
-options.add_argument('--start-maximized')
+#options.add_argument('--start-maximized')
 driver = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver', options=options)
 
 def abrirWebdriver(url):    

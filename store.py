@@ -12,12 +12,12 @@ characters = "%"
 listDatos = {}
 
 
-def iniciar():    
+def datosPartido(url):    
 
-    scraper.abrirWebdriver(url)
+    '''scraper.abrirWebdriver(url)
 
     xpath = '//button[@class=" css-kv701e"]/span'
-    scraper.click(xpath)
+    scraper.click(xpath)'''
 
     xpath = '//td[@class="equipo1"]/a/b'
     local = scraper.encotrarElemento(xpath).text    
@@ -123,4 +123,25 @@ def iniciar():
     #print(listaDatos)
 
 
+def jornadaPartidos():
+
+    listUrlPartidos=[]
     
+    scraper.abrirWebdriver("https://www.resultados-futbol.com/premier2021/grupo1/jornada25")
+    xpath = '//button[@class=" css-kv701e"]/span'
+    scraper.click(xpath) 
+
+    xpath='//table[@id="tabla1"]//td[@class="rstd"]/a'
+    partidos=scraper.encotrarElementos(xpath)
+    
+    for i in partidos:
+        url = i.get_attribute('href')
+        listUrlPartidos.append(url)
+
+    for url in listUrlPartidos:
+        scraper.abrirWebdriver(url)
+        xpath = '//button[@class=" css-kv701e"]/span'
+        scraper.click(xpath)    
+
+        dato =datosPartido(url)
+    print(dato)     

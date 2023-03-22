@@ -99,11 +99,6 @@ def nuevoRegistro(listaDatosEsta):
     s = pd.Series(listaDatosEsta,index=listaIndex)
    
     pd_datoEstadisticos = pd_datoEstadisticos.append(s,ignore_index=True)
-
-    pd_datoEstadisticos.to_csv('csv/partido.csv')
-    return pd_datoEstadisticos
-    
-
     
     return pd_datoEstadisticos
 
