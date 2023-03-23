@@ -1,8 +1,9 @@
 import scraper
 import manejoDato
 from manejoDato import EliminarCaracter
-
+import time
 from selenium import webdriver
+import pandas
 
 #from selenium.webdriver.common.keys import Keys
 
@@ -125,25 +126,72 @@ def datosPartido(url):
     #print(listaDatos)
 
 
-def jornadaPartidos():
+def partidos_x_jornada(url):
+    # ----->
+    #url = 'https://www.resultados-futbol.com/premier2021/grupo1/jornada7'
+    #jornada= url[len(url)-8:len(url)]
 
     listUrlPartidos=[]
     
-    scraper.abrirWebdriver("https://www.resultados-futbol.com/premier2015/grupo1/jornada25")
+    try:
+        scraper.abrirWebdriver(url)
+        xpath = '//button[@class=" css-kv701e"]/span'
+        scraper.click(xpath) 
+
+        xpath='//table[@id="tabla1"]//td[@class="rstd"]/a'
+        partidos=scraper.encotrarElementos(xpath)
+
+    
+
+        for i in partidos:
+            url = i.get_attribute('href')
+            listUrlPartidos.append(url)
+
+        for url in listUrlPartidos:
+            scraper.abrirWebdriver(url)
+
+            '''xpath = '//ul[@id="crumbs"]/li[2]/a'
+            ligaTemporada =  scraper.encotrarElemento(xpath).text'''
+
+
+
+            xpath = '//button[@class=" css-kv701e"]/span'
+            scraper.click(xpath)    
+            #time.sleep(4)
+            dato =datosPartido(url)
+
+        #dato.to_csv('csv/'+ligaTemporada+' '+jornada+'.csv')
+
+        return dato
+    except:
+        print('No abrio la pagina')
+
+def jornadas_x_temporad():
+    listaUrlJornadas = []
+    scraper.abrirWebdriver("https://www.resultados-futbol.com/premier2022")
     xpath = '//button[@class=" css-kv701e"]/span'
     scraper.click(xpath) 
 
-    xpath='//table[@id="tabla1"]//td[@class="rstd"]/a'
-    partidos=scraper.encotrarElementos(xpath)
-    
-    for i in partidos:
+    #Click en selector de jornada
+    xpath = '//div[@id="col-resultados"]//div[@class="right journey-simple"]/div[@class="j_cur"]/a'
+    scraper.click(xpath)
+
+
+    xpath='//div[@id="desplega_jornadas"]/ul/li/a'
+    jornadas=scraper.encotrarElementos(xpath)
+    cont = 0
+    for i in jornadas:
         url = i.get_attribute('href')
-        listUrlPartidos.append(url)
+        listaUrlJornadas.append(url)
+        cont = cont + 1
+        if cont == 42:
+            print(cont)
+            break
+    
+    for url in listaUrlJornadas:
+        print (url)
+        #time.sleep(4)
+        dato=partidos_x_jornada(url)
 
-    for url in listUrlPartidos:
-        scraper.abrirWebdriver(url)
-        xpath = '//button[@class=" css-kv701e"]/span'
-        scraper.click(xpath)    
-
-        dato =datosPartido(url)
-    print(dato)     
+    print(dato)
+    dato.to_csv('csv/par3.csv')
